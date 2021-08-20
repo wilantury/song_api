@@ -51,7 +51,7 @@ class Instrumentos(models.Model):
 
 """Model for songs"""
 class Song(models.Model):
-    fecha = models.DateField()
+    fecha = models.DateTimeField(null=True)
     id_externo = models.IntegerField()
     nombre = models.CharField(max_length=150)
     duracion = models.CharField(max_length=10)
@@ -76,6 +76,14 @@ class SongLabels(models.Model):
 class SongInstruments(models.Model):
     song = models.ForeignKey(Song, on_delete=models.CASCADE)
     instrument = models.ForeignKey(Instrumentos, null=True, on_delete=models.SET_NULL)
+
+    def __str__(self) -> str:
+        return f'{self.song} - {self.label}'
+
+"""Model to manage many-to-many relationship between Song and BandasSimilares"""
+class SongBandasSimilares(models.Model):
+    song = models.ForeignKey(Song, on_delete=models.CASCADE)
+    banda_similar = models.ForeignKey(BandasSimilares, null=True, on_delete=models.SET_NULL)
 
     def __str__(self) -> str:
         return f'{self.song} - {self.label}'
